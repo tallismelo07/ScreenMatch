@@ -1,5 +1,7 @@
 package packagescreenmatch.sistem.calculos;
 
+import packagescreenmatch.sistem.modelos.Titulo;
+
 public class CalculadoraDeTempo {
     private int tempoTotal;
 
