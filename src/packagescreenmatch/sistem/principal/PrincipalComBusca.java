@@ -1,7 +1,10 @@
 package packagescreenmatch.sistem.principal;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import packagescreenmatch.sistem.modelos.Titulo;
+import packagescreenmatch.sistem.modelos.TituloOmdb;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,12 +29,17 @@ public class PrincipalComBusca {
         HttpResponse<String> response = client
                 .send(request, HttpResponse.BodyHandlers.ofString());
         String json = response.body();
-
         System.out.println(json);
 
-        Gson gson = new Gson();
-        Titulo primeiroTitulo = gson.fromJson(json, Titulo.class);
+
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+        TituloOmdb segundoTitulo = gson.fromJson(json, TituloOmdb.class);
+        Titulo primeiroTitulo = new Titulo(segundoTitulo);
         System.out.println(primeiroTitulo);
+
+
 
 
     }
