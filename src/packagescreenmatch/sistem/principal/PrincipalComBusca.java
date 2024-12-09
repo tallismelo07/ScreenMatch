@@ -21,7 +21,6 @@ public class PrincipalComBusca {
         // https://www.omdbapi.com/?t=avengers&apikey=72019bad
         String endereco = "https://www.omdbapi.com/?t=" + busca + "&apikey=72019bad";
 
-
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endereco))
@@ -30,16 +29,24 @@ public class PrincipalComBusca {
                 .send(request, HttpResponse.BodyHandlers.ofString());
         String json = response.body();
         System.out.println(json);
-
+        System.out.println();
 
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .create();
         TituloOmdb segundoTitulo = gson.fromJson(json, TituloOmdb.class);
-        Titulo primeiroTitulo = new Titulo(segundoTitulo);
-        System.out.println(primeiroTitulo);
 
+        try {
+            Titulo primeiroTitulo = new Titulo(segundoTitulo);
+            System.out.println("-------- FILMES CADASTRADOS -------");
+            System.out.println(primeiroTitulo);
+        } catch (NumberFormatException e){
+            System.out.println("-------- ERROR -------");
+            System.out.println("Teve um erro que e: " + e.getMessage());
+        } finally {
+            System.out.println("Sistema finalizado com sucesso!");
 
+        }
 
 
     }
