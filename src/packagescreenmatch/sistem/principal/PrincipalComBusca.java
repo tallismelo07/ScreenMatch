@@ -3,6 +3,7 @@ package packagescreenmatch.sistem.principal;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import packagescreenmatch.sistem.exeption.ErroDeConversaoDeAnoException;
 import packagescreenmatch.sistem.modelos.Titulo;
 import packagescreenmatch.sistem.modelos.TituloOmdb;
 
@@ -19,33 +20,38 @@ public class PrincipalComBusca {
         System.out.print("Digite um filme para buscar: ");
         var busca = sc.nextLine();
         // https://www.omdbapi.com/?t=avengers&apikey=72019bad
-        String endereco = "https://www.omdbapi.com/?t=" + busca + "&apikey=72019bad";
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endereco))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
-        String json = response.body();
-        System.out.println(json);
-        System.out.println();
-
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-        TituloOmdb segundoTitulo = gson.fromJson(json, TituloOmdb.class);
+        String endereco = "https://www.omdbapi.com/?t=" + busca.replace(" ", "+") + "&apikey=72019bad";
 
         try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endereco))
+                    .build();
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+            System.out.println(json);
+            System.out.println();
+
+            Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+            TituloOmdb segundoTitulo = gson.fromJson(json, TituloOmdb.class);
+
+
             Titulo primeiroTitulo = new Titulo(segundoTitulo);
             System.out.println("-------- FILMES CADASTRADOS -------");
             System.out.println(primeiroTitulo);
         } catch (NumberFormatException e){
             System.out.println("-------- ERROR -------");
             System.out.println("Teve um erro que e: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro no modo de escrita na busca");
+            System.out.println(e.getMessage());
+        } catch (ErroDeConversaoDeAnoException e){
+            System.out.println(e.getMessage());
         } finally {
             System.out.println("Sistema finalizado com sucesso!");
-
         }
 
 
