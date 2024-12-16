@@ -7,6 +7,7 @@ import packagescreenmatch.sistem.exeption.ErroDeConversaoDeAnoException;
 import packagescreenmatch.sistem.modelos.Titulo;
 import packagescreenmatch.sistem.modelos.TituloOmdb;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -42,6 +43,11 @@ public class PrincipalComBusca {
             Titulo primeiroTitulo = new Titulo(segundoTitulo);
             System.out.println("-------- FILMES CADASTRADOS -------");
             System.out.println(primeiroTitulo);
+
+            FileWriter escrita =   new FileWriter("filme.txt");
+            escrita.write(primeiroTitulo.toString());
+            escrita.close();
+
         } catch (NumberFormatException e){
             System.out.println("-------- ERROR -------");
             System.out.println("Teve um erro que e: " + e.getMessage());
