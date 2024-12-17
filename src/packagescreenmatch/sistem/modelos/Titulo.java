@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import packagescreenmatch.sistem.exeption.ErroDeConversaoDeAnoException;
 
 public class Titulo implements Comparable<Titulo>{
+    @SerializedName("Title")
     private String nome;
+    @SerializedName("Year")
     private int anoDeLancamento;
     private boolean incluidoNoPlano;
     private double somaDasAvaliacoes;
@@ -82,11 +84,8 @@ public class Titulo implements Comparable<Titulo>{
 
     @Override
     public String toString() {
-        return "Nome do Filme: "
-                + nome
-                + " \nAno de Lancamento do filme: "
-                + anoDeLancamento
-                + " \nDuração do filme: "
-                + duracaoEmMinutos;
+        return "(nome = " + nome +
+                ", anoDeLancamento = " + anoDeLancamento + "," +
+                " duração = " + duracaoEmMinutos + ")";
     }
 }
